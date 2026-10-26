@@ -92,7 +92,9 @@ jobs:
        # Apply Kubernetes Manifests
       - name: Apply Kubernetes Manifests
         run: kubectl apply -f Deploy_service_Manifest/
-
+      
+      - name: wait for 60 se
+        run: sleep 60
       # # 12. Verify deployment rollout
       # - name: Verify rollout
       #   run: |
@@ -103,6 +105,8 @@ jobs:
       # Verify EKS connection and application
       - name: Verify EKS connection
         run: |
+          echo "===== Cluster Info ====="
+          kubectl cluster-info
           echo "===== Cluster Info ====="
           kubectl cluster-info
 
@@ -117,3 +121,7 @@ jobs:
 
           echo "===== Ingresses ====="
           kubectl get ingress -n "$K8S_NAMESPACE"
+      
+          - name: Verify EKS connection
+       
+       
