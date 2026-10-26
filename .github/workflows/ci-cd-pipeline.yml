@@ -82,19 +82,20 @@ jobs:
       - name: Install Helm
         uses: azure/setup-helm@v4
 
-      - name: Verify tools
-        run: |
-              aws --version
-              kubectl version --client
-              helm version
-              docker --version
       
       #install Helm
       - name: Install Helm
         run: |
           helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
           helm repo update
-          helm install ingress-nginx ingress-nginx/ingress-nginx --namespace voting-app
+          helm install ingress-nginx ingress-nginx/ingress-nginx --namespace $K8S_NAMESPACE
+      
+      - name: Verify tools
+        run: |
+              aws --version
+              kubectl version --client
+              helm version
+              docker --version
 
 
       # # 11. Update the Deployment with the new image
