@@ -93,15 +93,13 @@ jobs:
       - name: Apply Kubernetes Manifests
         run: kubectl apply -f Deploy_service_Manifest/
       
-      - name: wait for 60 se
+      - name: wait for 60 sec
         run: sleep 60
       # # 12. Verify deployment rollout
       # - name: Verify rollout
       #   run: |
-      #     kubectl rollout status \
-      #       deployment/"$K8S_DEPLOYMENT" \
-      #       -n "$K8S_NAMESPACE" \
-      #       --timeout=300s
+      #     kubectl rollout status deployment/voting-app -n "$K8S_NAMESPACE" --timeout=300s
+       # kubectl rollout status deployment/result-app -n "$K8S_NAMESPACE" --timeout=300s
       # Verify EKS connection and application
       - name: Verify EKS connection
         run: |

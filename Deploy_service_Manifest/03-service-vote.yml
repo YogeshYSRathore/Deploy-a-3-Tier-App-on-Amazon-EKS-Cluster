@@ -4,7 +4,7 @@ metadata:
   name: voting-app
   namespace: voting-app
 spec:
-  type: LoadBalancer
+  type: ClusterIP
   selector:
     app: voting-app
   ports:
