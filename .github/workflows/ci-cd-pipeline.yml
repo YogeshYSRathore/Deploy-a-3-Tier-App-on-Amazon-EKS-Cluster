@@ -100,8 +100,9 @@ jobs:
       #       deployment/"$K8S_DEPLOYMENT" \
       #       -n "$K8S_NAMESPACE" \
       #       --timeout=300s
+      # Verify EKS connection and application
       - name: Verify EKS connection
-        run:
+        run: |
           echo "===== Cluster Info ====="
           kubectl cluster-info
 
