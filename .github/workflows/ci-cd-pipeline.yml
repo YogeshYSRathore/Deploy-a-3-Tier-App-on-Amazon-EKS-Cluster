@@ -12,7 +12,7 @@ permissions:
 env:
   AWS_REGION: ${{ vars.AWS_REGION }}
   EKS_CLUSTER_NAME: ${{ vars.EKS_CLUSTER_NAME }}
-  #K8S_NAMESPACE: ${{ vars.K8S_NAMESPACE }}
+  K8S_NAMESPACE: ${{ vars.K8S_NAMESPACE }}
 
 
 jobs:
@@ -68,6 +68,10 @@ jobs:
         with:
           version: latest
       
+      # verify AWS identity
+      - name: Verify AWS identity
+        run: aws sts get-caller-identity
+
        # connect to Amzon EKS
       - name: Update kubeconfig
         run: |
@@ -75,8 +79,7 @@ jobs:
             --region "$AWS_REGION" \
             --name "$EKS_CLUSTER_NAME"
 
-      - name: Verify EKS connection
-        run: kubectl get nodes
+      
 
       # # 11. Update the Deployment with the new image
       # - name: Deploy new Docker image
@@ -97,5 +100,19 @@ jobs:
       #       deployment/"$K8S_DEPLOYMENT" \
       #       -n "$K8S_NAMESPACE" \
       #       --timeout=300s
-     
+      - name: Verify EKS connection
+        run:
+          echo "===== Cluster Info ====="
+          kubectl cluster-info
 
+          echo "===== Deployments ====="
+          kubectl get deployments -n "$K8S_NAMESPACE"
+
+          echo "===== Services ====="
+          kubectl get services -n "$K8S_NAMESPACE"
+
+          echo "===== Pods ====="
+          kubectl get pods -n "$K8S_NAMESPACE"
+
+          echo "===== Ingresses ====="
+          kubectl get ingress -n "$K8S_NAMESPACE"
