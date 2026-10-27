@@ -1,0 +1,10 @@
+# controller:
+#   service:
+#     # ACM decrypts HTTPS at the load balancer, so port 443 goes to NGINX's plain HTTP port
+#     targetPorts:
+#       https: http
+#     annotations:
+#       service.beta.kubernetes.io/aws-load-balancer-ssl-cert: arn:aws:acm:us-east-1:686699774218:certificate/9e8ffc1d-941a-4d7c-abbb-8b642356463e
+#       service.beta.kubernetes.io/aws-load-balancer-ssl-ports: "443"
+#       # Forward TCP instead of HTTP, so WebSocket upgrades reach NGINX
+#       service.beta.kubernetes.io/aws-load-balancer-backend-protocol: tcp
