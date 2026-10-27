@@ -11,7 +11,7 @@ The repository contains Kubernetes manifests and a GitHub Actions workflow that 
 - **Amazon EKS** for managed Kubernetes.
 - **GitHub Actions** for CI/CD automation.
 - **AWS IAM OIDC federation** for short-lived AWS credentials.
-- **Kubernetes manifests** maintained in the `K8s/` directory.
+- **Kubernetes manifests** maintained in the `Deploy_service_Manifest/` directory.
 - **Manual deployment support** using `kubectl`.
 - No long-lived AWS access keys required in GitHub Actions.
 
@@ -37,7 +37,7 @@ AWS IAM Role
    v
 Amazon EKS API
    |
-   | kubectl apply -f K8s/
+   | kubectl apply -f Deploy_service_Manifest/
    v
 Kubernetes Resources
 ```
@@ -48,11 +48,11 @@ The IAM role trust policy restricts which GitHub repository and branch can assum
 
 ```text
 .
-├── K8s/                         # Kubernetes manifests
+├── KDeploy_service_Manifest/                         # Kubernetes manifests
 │   ├── ...                      # Deployments, Services, Ingress, etc.
 └── .github/
     └── workflows/
-        └── deploy.yml           # GitHub Actions deployment workflow
+        └── ci-cd-pipeline.yml           # GitHub Actions deployment workflow
 ```
 
 Adjust the workflow filename or manifest paths if your repository uses a different structure.
@@ -66,7 +66,7 @@ Before you begin, make sure you have:
 - An EKS cluster reachable by the GitHub-hosted runner through its configured API endpoint and network access rules.
 - `aws` CLI and `kubectl` installed locally for manual deployment and troubleshooting.
 - Admin access to the GitHub repository.
-- Kubernetes manifests in the `K8s/` directory.
+- Kubernetes manifests in the `Deploy_service_Manifest/` directory.
 - An IAM OIDC identity provider for GitHub Actions.
 - An IAM role for the workflow.
 
@@ -279,8 +279,8 @@ aws eks update-kubeconfig \
 ### 3. Preview and apply the manifests
 
 ```bash
-kubectl diff -f K8s/
-kubectl apply -f K8s/
+kubectl diff -f Deploy_service_Manifest/
+kubectl apply -f Deploy_service_Manifest/
 ```
 
 ### 4. Verify the deployment
@@ -334,7 +334,7 @@ kubectl get events -A --sort-by=.lastTimestamp
 Only remove resources when you are sure they are no longer needed. Review the manifests and target namespace before running deletion commands. For example, to delete resources defined in the same manifest directory:
 
 ```bash
-kubectl delete -f K8s/
+kubectl delete -f Deploy_service_Manifest/
 ```
 
 This command deletes resources described by those files; it does not delete the EKS cluster itself. Review the manifests first, and do not run it against a production cluster without an approved cleanup plan.
